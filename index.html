@@ -1,15 +1,1373 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Professor MA, Qing Angel - Academic Website</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif; }
+        .section-header { border-left: 4px solid #2563eb; padding-left: 12px; margin-bottom: 16px; }
+        
+        /* Academic Blue Style for Collapsible Sections */
+        .vscode-section {
+            background: #ffffff;
+            border: 2px solid #d6e4f0;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0, 102, 204, 0.1);
+            transition: all 0.3s ease;
+        }
+        
+        .vscode-section:hover {
+            box-shadow: 0 4px 16px rgba(0, 102, 204, 0.18);
+            border-color: #0066cc;
+        }
+        
+        .collapsible-section {
+            cursor: pointer;
+            user-select: none;
+            padding: 18px 24px;
+            background: linear-gradient(135deg, #f0f6fc 0%, #e6f2ff 100%);
+            border-bottom: 2px solid #d6e4f0;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            transition: all 0.2s ease;
+        }
+        
+        .collapsible-section:hover {
+            background: linear-gradient(135deg, #d6e4f0 0%, #c2daf2 100%);
+        }
+        
+        .collapsible-section.active {
+            background: linear-gradient(135deg, #0066cc 0%, #0052a3 100%);
+            border-bottom-color: #004085;
+        }
+        
+        .section-title {
+            color: #0066cc;
+            font-size: 18px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        .collapsible-section.active .section-title {
+            color: #ffffff;
+        }
+        
+        .section-icon {
+            color: #0066cc;
+            font-size: 20px;
+            transition: color 0.2s ease;
+        }
+        
+        .collapsible-section:hover .section-icon {
+            color: #004085;
+        }
+        
+        .collapsible-section.active .section-icon {
+            color: #ffffff;
+        }
+        
+        .collapsible-content { 
+            max-height: 0; 
+            overflow: hidden; 
+            transition: max-height 0.4s ease-out;
+            background: #f8fbff;
+        }
+        
+        .collapsible-content.active { 
+            max-height: 10000px; 
+            transition: max-height 0.6s ease-in;
+        }
+        
+        .content-inner {
+            padding: 24px;
+            color: #333333;
+            line-height: 1.8;
+        }
+        
+        .content-inner h3 {
+            color: #0066cc;
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 16px;
+            padding-bottom: 8px;
+            border-bottom: 2px solid #d6e4f0;
+        }
+        
+        .content-inner h4 {
+            color: #0066cc;
+        }
+        
+        .content-inner a {
+            color: #0066cc;
+            text-decoration: none;
+            transition: color 0.2s ease;
+        }
+        
+        .content-inner a:hover {
+            color: #004085;
+            text-decoration: underline;
+        }
+        
+        .content-inner p {
+            color: #333333;
+        }
+        
+        .content-inner .text-gray-600 {
+            color: #546e7a !important;
+        }
+        
+        .content-inner .text-gray-700 {
+            color: #455a64 !important;
+        }
+        
+        .content-inner .text-gray-500 {
+            color: #78909c !important;
+        }
+        
+        .content-inner .border-gray-100 {
+            border-color: #e3f2fd !important;
+        }
+        
+        .content-inner ul li {
+            color: #455a64;
+        }
+        
+        .chevron { 
+            transition: all 0.3s ease;
+            color: #1976d2;
+        }
+        
+        .collapsible-section:hover .chevron {
+            color: #0d47a1;
+        }
+        
+        .collapsible-section.active .chevron {
+            color: #ffffff;
+        }
+        
+        .chevron.rotate { 
+            transform: rotate(180deg);
+        }
+        
+        /* Academic accent line */
+        .content-inner > div {
+            position: relative;
+            padding-left: 20px;
+        }
+        
+        .content-inner > div:before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 3px;
+            background: linear-gradient(to bottom, #1976d2, #42a5f5);
+            opacity: 0.4;
+            border-radius: 2px;
+        }
+        
+        /* Tab Navigation Styles */
+        .tab-btn {
+            transition: all 0.2s ease;
+        }
+        
+        .tab-btn.active {
+            background: linear-gradient(135deg, #1976d2 0%, #1565c0 100%) !important;
+            color: #ffffff !important;
+            border-bottom-color: #0d47a1 !important;
+        }
+        
+        .tab-content-pane {
+            display: none !important;
+        }
+        
+        .tab-content-pane.active {
+            display: block !important;
+            animation: fadeIn 0.3s ease-in;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body class="bg-white">
+    <!-- Fixed Header -->
+    <header class="fixed top-0 left-0 w-full bg-white/95 backdrop-blur-sm border-b border-gray-200 shadow-lg z-50">
+        <div class="max-w-[1200px] mx-auto flex items-center justify-between px-8 py-4">
+            <div class="text-2xl font-bold text-gray-900">Professor MA, Qing Angel</div>
+            <nav class="flex items-center gap-8 text-[17px]">
+                <a href="#overview" class="text-gray-600 hover:text-blue-600 font-medium transition-colors">Home</a>
+                <a href="#research-interests" class="text-gray-600 hover:text-blue-600 font-medium transition-colors">Research</a>
+                <a href="#research-outputs" class="text-gray-600 hover:text-blue-600 font-medium transition-colors">Publications</a>
+                <a href="#contact" class="text-gray-600 hover:text-blue-600 font-medium transition-colors">Contact</a>
+                <a href="https://corpus-website--chengjun1273068.replit.app/#news" target="_blank" rel="noopener noreferrer" class="text-gray-600 hover:text-blue-600 font-medium transition-colors">Corpus Website</a>
+            </nav>
+        </div>
+    </header>
 
-  <!DOCTYPE html>
-  <html lang="en">
-    <head>
-      <meta charset="UTF-8" />
-      <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-      <title>个人学术作业网站</title>
-    </head>
+    <!-- Main Content -->
+    <main class="pt-[80px]">
+        <div class="max-w-[1200px] mx-auto px-8 py-12">
+            <!-- Profile Section -->
+            <section class="mb-12">
+                <div class="flex flex-col lg:flex-row gap-12">
+                    <!-- Left Column -->
+                    <div class="lg:w-1/3 w-full flex flex-col items-center lg:items-start">
+                        <div class="w-64 h-80 overflow-hidden border-2 border-gray-300 mb-6">
+                            <img src="Prof_Ma_Qing_1755158269.jpeg" width='256' height='320'%3E%3Crect fill='%23e5e7eb' width='256' height='320'/%3E%3Ctext x='50%25' y='50%25' font-size='16' text-anchor='middle' alignment-baseline='middle' font-family='monospace, sans-serif' fill='%239ca3af'%3EProfile Photo%3C/text%3E%3C/svg%3E" alt="Professor Ma Qing" class="w-full h-full object-cover">
+                        </div>
+                        <h1 class="text-3xl font-bold mb-2 text-center lg:text-left text-gray-900">MA, Qing Angel</h1>
+                        <h2 class="text-lg text-gray-600 mb-4 text-center lg:text-left">馬清教授</h2>
+                        <p class="text-base text-gray-700 mb-2 text-center lg:text-left leading-relaxed">Professor, Department of Linguistics and Modern Language Studies</p>
+                        <p class="text-base text-gray-700 mb-4 text-center lg:text-left leading-relaxed">Associate Dean (Research and Postgraduate Studies), Faculty of Humanities</p>
+                        <p class="text-base text-blue-600 font-medium mb-6 text-center lg:text-left">The Education University of Hong Kong</p>
+                    </div>
 
-    <body>
-      <div id="root"></div>
-      <script type="module" src="/src/main.tsx"></script>
-    </body>
-  </html>
-  
+                    <!-- Right Column -->
+                    <div class="lg:w-2/3 w-full">
+                        <!-- Overview -->
+                        <div id="overview" class="mb-10 scroll-mt-24">
+                            <div class="section-header">
+                                <h2 class="text-2xl font-bold text-gray-900">Overview</h2>
+                            </div>
+                            <div class="space-y-4 text-gray-700 leading-relaxed">
+                                <p>Professor Angel Ma Qing has studied in China and Belgium, and worked in Macao SAR, before joining The Education University of Hong Kong (EdUHK) in 2008. She has served as programme leader of MATESOL and Associate Dean (Research and Postgraduate Studies) at the Faculty of Humanities, EdUHK. Professor Ma established and has conducted research into CBLP, a new approach to language teaching. This CBLP has achieved a global reach: more than 8,000 language teachers use it to teach over 30,000 students in more than 800 schools and universities in over 80 countries and regions. Her CBLP research unveils key theoretical concepts, creates and assesses the effectiveness of a CBLP training framework, and measures its impact on language teachers and students. As a result, her CBLP research has led to successful adoption of CBLP as a language policy by 16 institutions in Hong Kong, mainland China and internationally.</p>
+                                
+                                <div id="overview-extra" style="display: none;">
+                                    <p>Professor Ma's research bridges theory and practice, making significant contribution to the fields of language technology and language teaching, including TESOL. She has received several international awards, including the 2025 TESOL Award for Excellence in Research (the United States, 2025), the Esperanto "Access to Language Education" Award (the United States, 2020), and a Silver Medal at the 47th International Exhibition of Inventions of Geneva (Switzerland, 2019). In addition, her excellence in both research and teaching has been recognised through multiple awards from EdUHK, including the President's Award for Outstanding Performance in Research (2025), the Dean's International Research Collaboration Award (2023), the President's Award for Outstand Performance in Teaching (2021), and the Faculty Teaching Award (2020).</p>
+                                    <p>Professor Ma has made significant contributions to local, regional and international communities through a wide range of professional activities. Her work includes shaping language policy and reviewing Master of Arts programmes, as well as serving as a panel judge for many school-based competitions. She has conducted numerous seminars and has held roles as associate editor for five international journals, including Computer Assisted Language Learning and Language Learning & Technology, International Journal of Computer Assisted Language Learning and Teaching, etc. Furthermore, she has reviewed articles for more than 50 international journals. Her commitment to advancing the field is further demonstrated by her leadership in organising over 18 international conferences. Through these diverse roles, she has had a sustained and far-reaching impact on language education and research communities worldwide.</p>
+                                </div>
+                            </div>
+                            
+                            <button onclick="toggleOverview()" class="mt-4 flex items-center gap-2 text-blue-600 hover:text-blue-700 font-medium transition-colors">
+                                <span id="overview-btn-text">Read More</span>
+                                <svg id="overview-chevron" class="chevron" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <polyline points="6 9 12 15 18 9"></polyline>
+                                </svg>
+                            </button>
+                        </div>
+
+                        <!-- Research Interests -->
+                        <div id="research-interests" class="mb-10 scroll-mt-24">
+                            <div class="section-header">
+                                <h2 class="text-2xl font-bold text-gray-900">Research Interests</h2>
+                            </div>
+                            <ul class="space-y-2 text-gray-700">
+                                <li class="flex items-start"><span class="mr-2">•</span><span>Second language vocabulary acquisition</span></li>
+                                <li class="flex items-start"><span class="mr-2">•</span><span>Corpus linguistics, corpus-based language pedagogy (CBLP), corpus-based literary studies</span></li>
+                                <li class="flex items-start"><span class="mr-2">•</span><span>Computer-assisted language learning (CALL)</span></li>
+                                <li class="flex items-start"><span class="mr-2">•</span><span>Mobile-assisted language learning (MALL)</span></li>
+                                <li class="flex items-start"><span class="mr-2">•</span><span>Applications of artificial intelligence in language education</span></li>
+                            </ul>
+                        </div>
+
+                        <!-- Contact Info -->
+                        <div id="contact" class="mb-10 scroll-mt-24">
+                            <h2 class="text-2xl font-bold text-blue-700 mb-4">Contact Info</h2>
+                            <div class="flex flex-col gap-3 mb-6">
+                                <a href="mailto:maqing@eduhk.hk" class="flex items-center text-gray-700 hover:text-blue-600 transition-colors">
+                                    <span style="color:#ef4444; margin-right:12px;">✉</span>
+                                    <span>maqing@eduhk.hk</span>
+                                </a>
+                                <div class="flex items-center text-gray-700">
+                                    <span style="color:#ef4444; margin-right:12px;">☎</span>
+                                    <span>(852) 2948 8593</span>
+                                </div>
+                            </div>
+                            <div class="flex items-center gap-3 flex-wrap">
+                                <a href="https://scholar.google.com/citations?user=zHqYQNkAAAAJ&hl=en" target="_blank" rel="noopener noreferrer" class="text-blue-600 hover:text-blue-700 font-medium underline transition-colors">Google Scholar</a>
+                                <span class="text-gray-400">|</span>
+                                <a href="https://www.researchgate.net/profile/Qing-Ma-15" target="_blank" rel="noopener noreferrer" class="text-blue-600 hover:text-blue-700 font-medium underline transition-colors">Research Gate</a>
+                            </div>
+                        </div>
+
+                        <!-- Featured Projects -->
+                        <div id="featured-projects" class="scroll-mt-24">
+                            <h2 class="text-2xl font-bold text-gray-900 mb-4">Featured Projects</h2>
+                            <div class="space-y-3">
+                                <a href="https://corpus.eduhk.hk/eap/" target="_blank" rel="noopener noreferrer" class="flex items-center text-gray-700 hover:text-blue-600 transition-colors group">
+                                    <span style="color:#ef4444; margin-right:12px;">🌐</span>
+                                    <span class="group-hover:underline">Parallel EAP Corpora Project</span>
+                                </a>
+                                <a href="https://corpus.eduhk.hk/cap/" target="_blank" rel="noopener noreferrer" class="flex items-center text-gray-700 hover:text-blue-600 transition-colors group">
+                                    <span style="color:#ef4444; margin-right:12px;">🌐</span>
+                                    <span class="group-hover:underline">CAP for Language Teachers</span>
+                                </a>
+                                <a href="https://pressbooks.pub/cmtry1/" target="_blank" rel="noopener noreferrer" class="flex items-center text-gray-700 hover:text-blue-600 transition-colors group">
+                                    <span style="color:#ef4444; margin-right:12px;">🌐</span>
+                                    <span class="group-hover:underline">MOOC for CBLP</span>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Collapsible Academic Sections -->
+            <div class="mt-12 space-y-4">
+                
+                <!-- 1. Academic Qualification -->
+                <section id="academic-qualification" class="vscode-section scroll-mt-24">
+                    <div class="collapsible-section" onclick="toggleSection('qualification')">
+                        <h2 class="section-title">
+                            <span class="section-icon">📚</span>
+                            Academic Qualification
+                        </h2>
+                        <svg id="chevron-qualification" class="chevron" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <polyline points="6 9 12 15 18 9"></polyline>
+                        </svg>
+                    </div>
+                    <div id="content-qualification" class="collapsible-content">
+                        <div class="content-inner">
+                            <div class="space-y-4">
+                                <div class="flex items-start pb-4 border-b border-gray-100">
+                                    <svg class="w-5 h-5 mr-3 mt-0.5 flex-shrink-0" style="color: #dc2626;" fill="currentColor" viewBox="0 0 20 20">
+                                        <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
+                                    </svg>
+                                    <p class="text-gray-700 leading-relaxed">Ph.D. Applied Linguistics, University of Louvain, Belgium, 2007</p>
+                                </div>
+                                <div class="flex items-start pb-4 border-b border-gray-100">
+                                    <svg class="w-5 h-5 mr-3 mt-0.5 flex-shrink-0" style="color: #dc2626;" fill="currentColor" viewBox="0 0 20 20">
+                                        <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
+                                    </svg>
+                                    <p class="text-gray-700 leading-relaxed">MEd. Educational Research, Free University of Brussels, Belgium, 2001</p>
+                                </div>
+                                <div class="flex items-start">
+                                    <svg class="w-5 h-5 mr-3 mt-0.5 flex-shrink-0" style="color: #dc2626;" fill="currentColor" viewBox="0 0 20 20">
+                                        <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
+                                    </svg>
+                                    <p class="text-gray-700 leading-relaxed">B.A. English Language & Literature, Wuhan University, China, 1996</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- 2. Awards -->
+                <section id="awards" class="vscode-section scroll-mt-24">
+                    <div class="collapsible-section" onclick="toggleSection('awards')">
+                        <h2 class="section-title">
+                            <span class="section-icon">🏆</span>
+                            Awards
+                        </h2>
+                        <svg id="chevron-awards" class="chevron" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <polyline points="6 9 12 15 18 9"></polyline>
+                        </svg>
+                    </div>
+                    <div id="content-awards" class="collapsible-content">
+                        <div class="content-inner">
+                            <div class="space-y-4">
+                            <div class="pb-4 border-b border-gray-100">
+                                <p class="font-semibold text-gray-900 mb-1">The Network Citation Award</p>
+                                <p class="text-sm text-gray-600">August 28, 2025 • The Education University of Hong Kong</p>
+                            </div>
+                            <div class="pb-4 border-b border-gray-100">
+                                <p class="font-semibold text-gray-900 mb-1">"Best Paper Article" at the 4th International Conference on Creative and Innovative Technology in Education</p>
+                                <p class="text-sm text-gray-600">July 1-2, 2025 • University of Technology Malaysia, Malaysia</p>
+                            </div>
+                            <div class="pb-4 border-b border-gray-100">
+                                <p class="font-semibold text-gray-900 mb-1">President's Award for Outstanding Performance in Research</p>
+                                <p class="text-sm text-gray-600">May 20, 2025 • The Education University of Hong Kong</p>
+                            </div>
+                            <div class="pb-4 border-b border-gray-100">
+                                <p class="font-semibold text-gray-900 mb-1">2025 TESOL Award for Excellence in Research</p>
+                                <p class="text-sm text-gray-600">March 19, 2025 • USA</p>
+                            </div>
+                            <div class="pb-4 border-b border-gray-100">
+                                <p class="font-semibold text-gray-900 mb-1">"Best Paper Award" at the International Conference on TeLLT & CoLLT 2024</p>
+                                <p class="text-sm text-gray-600">July 05, 2024 • Hong Kong</p>
+                            </div>
+                            <div class="pb-4 border-b border-gray-100">
+                                <p class="font-semibold text-gray-900 mb-1">Award for Excellent FE Supervision</p>
+                                <p class="text-sm text-gray-600">June 2024 • EdUHK, Hong Kong</p>
+                            </div>
+                            <div class="pb-4 border-b border-gray-100">
+                                <p class="font-semibold text-gray-900 mb-1">Dean's International Research Collaboration Award</p>
+                                <p class="text-sm text-gray-600">October 16, 2023 • FHM, EdUHK, Hong Kong</p>
+                            </div>
+                            <div class="pb-4 border-b border-gray-100">
+                                <p class="font-semibold text-gray-900 mb-1">"The Best Paper Presentation Award" at the 2nd APSCE International Conference on Future Language Learning 2023</p>
+                                <p class="text-sm text-gray-600">May 31, 2023 • Beijing, China</p>
+                            </div>
+                            <div class="pb-4 border-b border-gray-100">
+                                <p class="font-semibold text-gray-900 mb-1">Finalist of University Grants Committee (UGC) Teaching Award</p>
+                                <p class="text-sm text-gray-600">September 28, 2021 • Hong Kong</p>
+                            </div>
+                            <div class="pb-4 border-b border-gray-100">
+                                <p class="font-semibold text-gray-900 mb-1">President's Award for Outstanding Performance in Teaching</p>
+                                <p class="text-sm text-gray-600">May 27, 2021 • The Education University of Hong Kong</p>
+                            </div>
+                            <div class="pb-4 border-b border-gray-100">
+                                <p class="font-semibold text-gray-900 mb-1">2020 Esperanto "Access to Language Education" Award</p>
+                                <p class="text-sm text-gray-600">June 2, 2020 • USA</p>
+                            </div>
+                            <div class="pb-4 border-b border-gray-100">
+                                <p class="font-semibold text-gray-900 mb-1">Faculty Teaching Award 2019-2020</p>
+                                <p class="text-sm text-gray-600">May 2020 • The Education University of Hong Kong</p>
+                            </div>
+                            <div>
+                                <p class="font-semibold text-gray-900 mb-1">Silver Medal of the 47th International Exhibition of Inventions of Geneva</p>
+                                <p class="text-sm text-gray-600">April 12, 2019 • Switzerland</p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- 3. Journal Editorship -->
+                <section id="journal-editorship" class="vscode-section scroll-mt-24">
+                    <div class="collapsible-section" onclick="toggleSection('editorship')">
+                        <h2 class="section-title">
+                            <span class="section-icon">📝</span>
+                            Journal Editorship
+                        </h2>
+                        <svg id="chevron-editorship" class="chevron" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <polyline points="6 9 12 15 18 9"></polyline>
+                        </svg>
+                    </div>
+                    <div id="content-editorship" class="collapsible-content">
+                        <div class="content-inner">
+                            <ul class="space-y-3 text-gray-700">
+                                <li>• Associate Editor of Computer Assisted Language Learning (CALL)</li>
+                                <li>• Associate Editor of Language Learning & Technology (LL&T)</li>
+                                <li>• Associate Editor of the International Journal of Computer-Assisted Language Learning and Teaching (IJCALLT)</li>
+                                <li>• Associate Editor of Journal of China Computer Assisted Language Learning (ChinaCALL)</li>
+                                <li>• Associate Editor of Research and Practice in Technology Enhanced Learning (RPTEL)</li>
+                            </ul>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- 4. Research Outputs -->
+                <section id="research-outputs" class="vscode-section scroll-mt-16">
+                    <div class="collapsible-section" onclick="toggleSection('outputs')">
+                        <h2 class="section-title">
+                            <span class="section-icon">📄</span>
+                            Research Outputs
+                        </h2>
+                        <svg id="chevron-outputs" class="chevron" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <polyline points="6 9 12 15 18 9"></polyline>
+                        </svg>
+                    </div>
+                    <div id="content-outputs" class="collapsible-content">
+                        <div class="content-inner">
+                            
+                            <!-- Tab Navigation -->
+                            <div class="flex flex-wrap gap-3 mb-6 border-b-2 border-gray-200 pb-4">
+                                <button onclick="switchTab('journal-articles', event)" class="tab-btn active inline-flex items-center px-4 py-2 bg-blue-50 text-blue-700 rounded-t-lg border-b-2 border-blue-600 font-medium transition-all hover:bg-blue-100">
+                                    <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                                        <path d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+                                    </svg>
+                                    Journal Articles
+                                </button>
+                                <button onclick="switchTab('academic-books', event)" class="tab-btn inline-flex items-center px-4 py-2 bg-gray-50 text-gray-700 rounded-t-lg border-b-2 border-transparent font-medium transition-all hover:bg-gray-100">
+                                    <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                                        <path d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/>
+                                    </svg>
+                                    Refereed Academic Books
+                                </button>
+                                <button onclick="switchTab('book-chapters', event)" class="tab-btn inline-flex items-center px-4 py-2 bg-gray-50 text-gray-700 rounded-t-lg border-b-2 border-transparent font-medium transition-all hover:bg-gray-100">
+                                    <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                                        <path d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z"/>
+                                    </svg>
+                                    Refereed Book Chapters
+                                </button>
+                                <button onclick="switchTab('guest-editor', event)" class="tab-btn inline-flex items-center px-4 py-2 bg-gray-50 text-gray-700 rounded-t-lg border-b-2 border-transparent font-medium transition-all hover:bg-gray-100">
+                                    <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                                        <path d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/>
+                                    </svg>
+                                    Guest Editor for Special Issues
+                                </button>
+                            </div>
+
+                            <!-- Tab Content: Journal Articles -->
+                            <div id="journal-articles" class="tab-content-pane active">
+                            <!-- Journal Articles -->
+                            <div class="mb-8">
+                                <h3 class="text-lg font-bold text-blue-700 mb-4">Journal Articles (50 publications)</h3>
+                                <div class="space-y-4">
+                                    <!-- Paper 1 -->
+                                    <div class="pb-4 border-b border-gray-100">
+                                        <h4 class="font-semibold text-gray-900 mb-2"><a href="https://repository.eduhk.hk/en/publications/tracing-the-development-of-periphrastic-causatives-of-efl-learner/" target="_blank" rel="noopener noreferrer" class="hover:text-blue-600">Tracing the Development of Periphrastic Causatives of EFL Learners From Different L1 Backgrounds: Insights From Learner Corpora.</a></h4>
+                                        <p class="text-sm text-gray-600 mb-1">Zhi, Y., Ma, Q., Chueng, H. (2025)</p>
+                                        <p class="text-sm italic text-gray-500">Sage Open (SSCI, B)</p>
+                                    </div>
+                                    
+                                    <!-- Paper 2 -->
+                                    <div class="pb-4 border-b border-gray-100">
+                                        <h4 class="font-semibold text-gray-900 mb-2"><a href="https://repository.eduhk.hk/en/publications/tpack-for-corpus-technology-tesol-student-teachers-growth-and-sel/" target="_blank" rel="noopener noreferrer" class="hover:text-blue-600">TPACK for Corpus Technology: TESOL Student Teachers' Growth and Self-Efficacy in Independent Language Learning and Teaching.</a></h4>
+                                        <p class="text-sm text-gray-600 mb-1">Ma, Q**., Yan, J., Lee, C. K., & Crosthwaite, P. (2025)</p>
+                                        <p class="text-sm italic text-gray-500">ReCALL, 1-7</p>
+                                    </div>
+                                    
+                                    <!-- Paper 3 -->
+                                    <div class="pb-4 border-b border-gray-100">
+                                        <h4 class="font-semibold text-gray-900 mb-2"><a href="https://hrmars.com/IJARPED/article/view/26672/Exploring-the-Impact-of-AI-Assisted-Speaking-Practice-on-EFL-Learners-Speaking-Proficiency-and-Motivation-A-Mixed-Method-Study" target="_blank" rel="noopener noreferrer" class="hover:text-blue-600">Exploring the Impact of AI-Assisted Speaking Practice on EFL Learners' Speaking Proficiency and Motivation: A Mixed-Method Study.</a></h4>
+                                        <p class="text-sm text-gray-600 mb-1">Shen, J., Qian, B., Ma, Q., & Deris, F. D. (2025)</p>
+                                        <p class="text-sm italic text-gray-500">International Journal of Academic Research in Progressive Education and Development, 14(4), 43-52</p>
+                                    </div>
+                                    
+                                    <!-- Paper 4 -->
+                                    <div class="pb-4 border-b border-gray-100">
+                                        <h4 class="font-semibold text-gray-900 mb-2"><a href="https://repository.eduhk.hk/en/publications/supporting-low-proficiency-l2-learners-vocabulary-learning-with-c/" target="_blank" rel="noopener noreferrer" class="hover:text-blue-600">Supporting Low-Proficiency L2 Learners' Vocabulary Learning With Custom GPT-Scaffolded Corpus-Based Language Pedagogy: A Case Study.</a></h4>
+                                        <p class="text-sm text-gray-600 mb-1">LIU, J. & MA, Q., Aug 2025</p>
+                                        <p class="text-sm italic text-gray-500">Computer Assisted Language Learning (E-pub ahead of print)</p>
+                                    </div>
+                                    
+                                    <!-- Paper 5 -->
+                                    <div class="pb-4 border-b border-gray-100">
+                                        <h4 class="font-semibold text-gray-900 mb-2"><a href="https://repository.eduhk.hk/en/publications/a-systematic-review-of-data-driven-learning-research-on-language-/" target="_blank" rel="noopener noreferrer" class="hover:text-blue-600">A Systematic Review of Data-Driven Learning Research on Language Learning and Teaching for Pre-Tertiary Learners: Balancing Qualitative and Quantitative Research.</a></h4>
+                                        <p class="text-sm text-gray-600 mb-1">Huang, S. & Ma, Q., Aug 2025</p>
+                                        <p class="text-sm italic text-gray-500">Learning and Individual Differences, 122, 102752</p>
+                                    </div>
+                                    
+                                    <!-- Paper 6 -->
+                                    <div class="pb-4 border-b border-gray-100">
+                                        <h4 class="font-semibold text-gray-900 mb-2"><a href="https://repository.eduhk.hk/en/publications/bridging-classroom-and-real-life-learning-mediated-by-a-mobile-ap/" target="_blank" rel="noopener noreferrer" class="hover:text-blue-600">Bridging Classroom and Real-Life Learning Mediated by a Mobile App With a Self-Regulation Scheme: Impacts on Chinese EFL Primary Students' Self-Regulated Vocabulary Learning Outcomes, Enjoyment, and Learning Behaviours.</a></h4>
+                                        <p class="text-sm text-gray-600 mb-1">Yang, Y., Song, Y., & Yan, J., Ma, Q. (2025)</p>
+                                        <p class="text-sm italic text-gray-500">System, 131, 103671 (SSCI, A*)</p>
+                                    </div>
+                                    
+                                    <!-- Paper 7 -->
+                                    <div class="pb-4 border-b border-gray-100">
+                                        <h4 class="font-semibold text-gray-900 mb-2"><a href="https://repository.eduhk.hk/en/publications/technology-enhanced-self-regulation-training-a-dynamic-training-m/" target="_blank" rel="noopener noreferrer" class="hover:text-blue-600">Technology-Enhanced Self-Regulation Training: A Dynamic Training Model to Facilitate Second Language Vietnamese Learners' Self-Regulated Writing Skills.</a></h4>
+                                        <p class="text-sm text-gray-600 mb-1">Tran, T. T. T., & Ma, Q**. (2025)</p>
+                                        <p class="text-sm italic text-gray-500">System, 130, 103625 (SSCI, A*)</p>
+                                    </div>
+                                    
+                                    <!-- Paper 8 -->
+                                    <div class="pb-4 border-b border-gray-100">
+                                        <h4 class="font-semibold text-gray-900 mb-2"><a href="https://repository.eduhk.hk/en/publications/exploring-transcultural-translanguaging-strategies-in-english-lit/" target="_blank" rel="noopener noreferrer" class="hover:text-blue-600">Exploring Transcultural Translanguaging Strategies in English Literature of a Bilingual Chinese Author: A Corpus-Based Study.</a></h4>
+                                        <p class="text-sm text-gray-600 mb-1">MA, Q., SU, X., ERNI, J. N. & XU, Z., 2025</p>
+                                        <p class="text-sm italic text-gray-500">Asian Englishes, 27(2), 404-424 (ESCI, A)</p>
+                                    </div>
+                                    
+                                    <!-- Paper 9 -->
+                                    <div class="pb-4 border-b border-gray-100">
+                                        <h4 class="font-semibold text-gray-900 mb-2"><a href="https://repository.eduhk.hk/en/publications/theory-supported-corpus-pedagogy-for-esl-pre-service-teachers-usi/" target="_blank" rel="noopener noreferrer" class="hover:text-blue-600">Theory-Supported Corpus Pedagogy for ESL Pre-Service Teachers: Using Parallel EAP Corpora for Language Learning.</a></h4>
+                                        <p class="text-sm text-gray-600 mb-1">Yan, J., & Ma., Q**. (2025)</p>
+                                        <p class="text-sm italic text-gray-500">Journal of China Computer-Assisted Language Learning (E-pub ahead of print)</p>
+                                    </div>
+                                    
+                                    <!-- Paper 10 -->
+                                    <div class="pb-4 border-b border-gray-100">
+                                        <h4 class="font-semibold text-gray-900 mb-2"><a href="https://repository.eduhk.hk/en/publications/examining-corpus-based-language-pedagogy-cblp-practices-in-data-d/" target="_blank" rel="noopener noreferrer" class="hover:text-blue-600">Examining Corpus-Based Language Pedagogy (CBLP) Practices in Data Driven Learning (DDL) for Low-Proficiency L2 English Learners.</a></h4>
+                                        <p class="text-sm text-gray-600 mb-1">LIU, J. & MA, Q., Apr 2025</p>
+                                        <p class="text-sm italic text-gray-500">Educational Technology & Society, 28(2), 53-76 (SSCI, A)</p>
+                                    </div>
+                                    
+                                    <!-- Paper 11 -->
+                                    <div class="pb-4 border-b border-gray-100">
+                                        <h4 class="font-semibold text-gray-900 mb-2"><a href="https://repository.eduhk.hk/en/publications/exploring-undergraduate-students-learning-experience-and-engageme/" target="_blank" rel="noopener noreferrer" class="hover:text-blue-600">Exploring Undergraduate Students' Learning Experience and Engagement in Synchronous Online Teaching Supported by Corpus-Based Language Pedagogy.</a></h4>
+                                        <p class="text-sm text-gray-600 mb-1">CHEUNG, L. M. E., MA, Q. & SUN, D., Jan 2025</p>
+                                        <p class="text-sm italic text-gray-500">Research and Practice in Technology Enhanced Learning, 20, 18</p>
+                                    </div>
+                                    
+                                    <!-- Paper 12 -->
+                                    <div class="pb-4 border-b border-gray-100">
+                                        <h4 class="font-semibold text-gray-900 mb-2"><a href="https://repository.eduhk.hk/en/publications/exploring-efl-students-pronunciation-learning-supported-by-corpus/" target="_blank" rel="noopener noreferrer" class="hover:text-blue-600">Exploring EFL students' pronunciation learning supported by corpus-based language pedagogy.</a></h4>
+                                        <p class="text-sm text-gray-600 mb-1">MA, Q., MEI, F. & QIAN, B., Nov 2024</p>
+                                        <p class="text-sm italic text-gray-500">Computer Assisted Language Learning (E-pub ahead of print)</p>
+                                    </div>
+                                    
+                                    <!-- Paper 13 -->
+                                    <div class="pb-4 border-b border-gray-100">
+                                        <h4 class="font-semibold text-gray-900 mb-2"><a href="https://www.jbe-platform.com/content/journals/10.1075/aral.24036.tu" target="_blank" rel="noopener noreferrer" class="hover:text-blue-600">Exploring EFL vocabulary learning through the story continuation writing task: A mixed-methods study.</a></h4>
+                                        <p class="text-sm text-gray-600 mb-1">Tu, M. Ma, Q**., & Jiang, L. (2024)</p>
+                                        <p class="text-sm italic text-gray-500">Australian Review of Applied Linguistics</p>
+                                    </div>
+                                    
+                                    <!-- Paper 14 -->
+                                    <div class="pb-4 border-b border-gray-100">
+                                        <h4 class="font-semibold text-gray-900 mb-2"><a href="https://repository.eduhk.hk/en/publications/online-peer-feedback-training-based-on-self-regulated-learning-in/" target="_blank" rel="noopener noreferrer" class="hover:text-blue-600">Online peer feedback training based on self-regulated learning in English as a foreign language writing: Perceived usefulness and students' engagement.</a></h4>
+                                        <p class="text-sm text-gray-600 mb-1">TRAN, T. T. T. & MA, Q., Dec 2024</p>
+                                        <p class="text-sm italic text-gray-500">Studies in Educational Evaluation, 83, 101418 (SSCI, A)</p>
+                                    </div>
+                                    
+                                    <!-- Paper 15 -->
+                                    <div class="pb-4 border-b border-gray-100">
+                                        <h4 class="font-semibold text-gray-900 mb-2"><a href="https://repository.eduhk.hk/en/publications/developing-advanced-citation-skills-a-mixed-methods-approach-to-c/" target="_blank" rel="noopener noreferrer" class="hover:text-blue-600">Developing advanced citation skills: A mixed-methods approach to corpus technology training for novice researchers.</a></h4>
+                                        <p class="text-sm text-gray-600 mb-1">YAN, J. L. & MA, Q., Nov 2024</p>
+                                        <p class="text-sm italic text-gray-500">Journal of English for Academic Purposes, 72, 101451</p>
+                                    </div>
+                                    
+                                    <!-- Paper 16 -->
+                                    <div class="pb-4 border-b border-gray-100">
+                                        <h4 class="font-semibold text-gray-900 mb-2"><a href="https://www.cambridge.org/core/journals/recall/article/exploring-collaborative-writing-among-large-groups-in-online-distance-learning-through-a-public-forum-and-private-chat-tool/50F126FD01ADAF3861E90DB7F0A5C705" target="_blank" rel="noopener noreferrer" class="hover:text-blue-600">Exploring collaborative writing among large groups in online distance learning through a public online forum and private chat tool.</a></h4>
+                                        <p class="text-sm text-gray-600 mb-1">Mei. F., Ma, Q**., Tang, J., & Zou, B. (2024)</p>
+                                        <p class="text-sm italic text-gray-500">ReCALL (SSCI, A*)</p>
+                                    </div>
+                                    
+                                    <!-- Paper 17 -->
+                                    <div class="pb-4 border-b border-gray-100">
+                                        <h4 class="font-semibold text-gray-900 mb-2"><a href="https://repository.eduhk.hk/en/publications/exploring-efl-learners-perceived-promise-and-limitations-of-using/" target="_blank" rel="noopener noreferrer" class="hover:text-blue-600">Exploring EFL learners' perceived promise and limitations of using an artificial intelligence speech evaluation system for speaking practice.</a></h4>
+                                        <p class="text-sm text-gray-600 mb-1">ZOU, B., LIVIERO, S., MA, Q., ZHANG, W., DU, Y. & XING, P., 2024</p>
+                                        <p class="text-sm italic text-gray-500">System, 126, 103497</p>
+                                    </div>
+                                    
+                                    <!-- Paper 18 -->
+                                    <div class="pb-4 border-b border-gray-100">
+                                        <h4 class="font-semibold text-gray-900 mb-2"><a href="https://repository.eduhk.hk/en/publications/exploring-chatgpt-literacy-in-language-education-a-global-perspec/" target="_blank" rel="noopener noreferrer" class="hover:text-blue-600">Exploring ChatGPT literacy in language education: A global perspective and comprehensive approach.</a></h4>
+                                        <p class="text-sm text-gray-600 mb-1">MA, Q., CROSTHWAITE, P., SUN, D. & ZOU, D., 2024</p>
+                                        <p class="text-sm italic text-gray-500">Computers and Education: Artificial Intelligence, 7, 100278</p>
+                                    </div>
+                                    
+                                    <!-- Paper 19 -->
+                                    <div class="pb-4 border-b border-gray-100">
+                                        <h4 class="font-semibold text-gray-900 mb-2"><a href="https://onlinelibrary.wiley.com/doi/10.1111/ijal.12608" target="_blank" rel="noopener noreferrer" class="hover:text-blue-600">Effect of localized task-based language teaching on Chinese secondary school English learners' oral production in examination-oriented contexts.</a></h4>
+                                        <p class="text-sm text-gray-600 mb-1">Lu, J., Ma, Q**., & Li, S. (2024)</p>
+                                        <p class="text-sm italic text-gray-500">International Journal of Applied Linguistics, 35(1), 168-192</p>
+                                    </div>
+                                    
+                                    <!-- Paper 20 -->
+                                    <div class="pb-4 border-b border-gray-100">
+                                        <h4 class="font-semibold text-gray-900 mb-2"><a href="https://repository.eduhk.hk/en/publications/self-regulated-and-collaborative-personalised-vocabulary-learning/" target="_blank" rel="noopener noreferrer" class="hover:text-blue-600">Self-regulated and collaborative personalised vocabulary learning approach in MALL.</a></h4>
+                                        <p class="text-sm text-gray-600 mb-1">MA, Q. & CHIU, M. M., Jun 2024</p>
+                                        <p class="text-sm italic text-gray-500">Language Learning and Technology, 28(1), 1-28 (SSCI, A*)</p>
+                                    </div>
+                                    
+                                    <!-- Paper 21 -->
+                                    <div class="pb-4 border-b border-gray-100">
+                                        <h4 class="font-semibold text-gray-900 mb-2"><a href="https://repository.eduhk.hk/en/publications/a-corpus-based-approach-to-chinese-english-study-pinning-down-the/" target="_blank" rel="noopener noreferrer" class="hover:text-blue-600">A corpus-based approach to Chinese English study: Pinning down the 'Chineseness' and implications for creative writing in English in China.</a></h4>
+                                        <p class="text-sm text-gray-600 mb-1">Yu, A. & Ma, Q., 2024</p>
+                                        <p class="text-sm italic text-gray-500">Asian Englishes, 26(1), 1-20</p>
+                                    </div>
+                                    
+                                    <!-- Paper 22 -->
+                                    <div class="pb-4 border-b border-gray-100">
+                                        <h4 class="font-semibold text-gray-900 mb-2"><a href="https://repository.eduhk.hk/en/publications/online-technologies-for-language-learning-and-teaching-innovation/" target="_blank" rel="noopener noreferrer" class="hover:text-blue-600">Online technologies for language learning and teaching: Innovations, practices and perceptions from students and teachers.</a></h4>
+                                        <p class="text-sm text-gray-600 mb-1">MA, Q. & WANG, L., 2024</p>
+                                        <p class="text-sm italic text-gray-500">Journal of China Computer-Assisted Language Learning, 4(1), 1-5</p>
+                                    </div>
+                                    
+                                    <!-- Paper 23 -->
+                                    <div class="pb-4 border-b border-gray-100">
+                                        <h4 class="font-semibold text-gray-900 mb-2"><a href="https://repository.eduhk.hk/en/publications/learning-by-design-enhancing-online-collaboration-in-developing-p/" target="_blank" rel="noopener noreferrer" class="hover:text-blue-600">Learning by design: Enhancing online collaboration in developing pre-service TESOL teachers' TPACK for teaching with corpus technology.</a></h4>
+                                        <p class="text-sm text-gray-600 mb-1">MA, Q., LEE, H. T. H., GAO, X. A. & CHAI, C.-S., Oct 2024</p>
+                                        <p class="text-sm italic text-gray-500">British Journal of Educational Technology, 55, 2639-2667</p>
+                                    </div>
+                                    
+                                    <!-- Paper 24 -->
+                                    <div class="pb-4 border-b border-gray-100">
+                                        <h4 class="font-semibold text-gray-900 mb-2"><a href="https://repository.eduhk.hk/en/publications/teacher-paths-for-developing-corpus-based-language-pedagogy-a-cas/" target="_blank" rel="noopener noreferrer" class="hover:text-blue-600">Teacher paths for developing corpus-based language pedagogy: A case study</a></h4>
+                                        <p class="text-sm text-gray-600 mb-1">MA, Q., YUAN, R. E., CHEUNG, L. M. E. & YANG, J., 2024</p>
+                                        <p class="text-sm italic text-gray-500">Computer Assisted Language Learning. 37, 3, p. 461-492</p>
+                                    </div>
+                                    
+                                    <!-- Paper 25 -->
+                                    <div class="pb-4 border-b border-gray-100">
+                                        <h4 class="font-semibold text-gray-900 mb-2"><a href="https://repository.eduhk.hk/en/publications/a-systematic-review-of-research-on-immersive-technology-enhanced-/" target="_blank" rel="noopener noreferrer" class="hover:text-blue-600">A systematic review of research on immersive technology-enhanced writing education: The current state and a research agenda.</a></h4>
+                                        <p class="text-sm text-gray-600 mb-1">CHEN, Y., LI, M., HUANG, C., CUKUROVA, M. & MA, Q., 2023</p>
+                                        <p class="text-sm italic text-gray-500">IEEE Transactions on Learning Technologies, 17, 919-938</p>
+                                    </div>
+                                    
+                                    <!-- Paper 26 -->
+                                    <div class="pb-4 border-b border-gray-100">
+                                        <h4 class="font-semibold text-gray-900 mb-2"><a href="https://repository.eduhk.hk/en/publications/teachers-perceived-corpus-literacy-and-their-intention-to-integra/" target="_blank" rel="noopener noreferrer" class="hover:text-blue-600">Teachers' perceived corpus literacy and their intention to integrate corpora into classroom teaching: A survey study</a></h4>
+                                        <p class="text-sm text-gray-600 mb-1">MA, Q., CHIU, M. M., LIN, S. & MENDOZA, N. B., Jan 2023.</p>
+                                        <p class="text-sm italic text-gray-500">In: ReCALL. 35, 1, p. 19-39</p>
+                                    </div>
+                                    
+                                    <!-- Paper 27 -->
+                                    <div class="pb-4 border-b border-gray-100">
+                                        <h4 class="font-semibold text-gray-900 mb-2"><a href="https://repository.eduhk.hk/en/publications/developing-an-ai-based-learning-system-for-l2-learners-authentic-/" target="_blank" rel="noopener noreferrer" class="hover:text-blue-600">Developing an AI-based learning system for L2 learners' authentic and ubiquitous learning in English language.</a></h4>
+                                        <p class="text-sm text-gray-600 mb-1">JIA, F., SUN, D., MA, Q. & LOOI, C. K., Dec 2022</p>
+                                        <p class="text-sm italic text-gray-500">Sustainability, 14(23), 15527</p>
+                                    </div>
+                                    
+                                    <!-- Paper 28 -->
+                                    <div class="pb-4 border-b border-gray-100">
+                                        <h4 class="font-semibold text-gray-900 mb-2"><a href="https://repository.eduhk.hk/en/publications/online-language-education-courses-a-chinese-case-from-an-ecologic/" target="_blank" rel="noopener noreferrer" class="hover:text-blue-600">Online language education courses: A Chinese case from an ecological perspective.</a></h4>
+                                        <p class="text-sm text-gray-600 mb-1">MEI, F. F., LU, Y. & MA, Q., Dec 2022</p>
+                                        <p class="text-sm italic text-gray-500">Journal of China Computer-Assisted Language Learning, 2(2), 228-256</p>
+                                    </div>
+                                    
+                                    <!-- Paper 29 -->
+                                    <div class="pb-4 border-b border-gray-100">
+                                        <h4 class="font-semibold text-gray-900 mb-2"><a href="https://repository.eduhk.hk/en/publications/inquiry-into-online-learning-communities-potential-for-fostering-/" target="_blank" rel="noopener noreferrer" class="hover:text-blue-600">Inquiry into online learning communities: Potential for fostering collaborative writing.</a></h4>
+                                        <p class="text-sm text-gray-600 mb-1">WU, W., MA, Q. & SANTOS, I. M., Aug 2022</p>
+                                        <p class="text-sm italic text-gray-500">Journal of China Computer-Assisted Language Learning, 2(1), 20-44</p>
+                                    </div>
+                                    
+                                    <!-- Paper 30 -->
+                                    <div class="pb-4 border-b border-gray-100">
+                                        <h4 class="font-semibold text-gray-900 mb-2"><a href="https://repository.eduhk.hk/en/publications/the-development-of-corpus-based-language-pedagogy-for-tesol-teach/" target="_blank" rel="noopener noreferrer" class="hover:text-blue-600">The development of corpus-based language pedagogy for TESOL teachers: A two-step training approach facilitated by online collaboration.</a></h4>
+                                        <p class="text-sm text-gray-600 mb-1">MA, Q., TANG, J. & LIN, S., 2022</p>
+                                        <p class="text-sm italic text-gray-500">Computer Assisted Language Learning, 35(9), 2731-2760</p>
+                                    </div>
+                                    
+                                    <!-- Paper 31 -->
+                                    <div class="pb-4 border-b border-gray-100">
+                                        <h4 class="font-semibold text-gray-900 mb-2"><a href="https://repository.eduhk.hk/en/publications/how-to-empirically-and-theoretically-incorporate-digital-technolo/" target="_blank" rel="noopener noreferrer" class="hover:text-blue-600">How to empirically and theoretically incorporate digital technologies into language learning and teaching.</a></h4>
+                                        <p class="text-sm text-gray-600 mb-1">MA, Q. & YAN, J. L., May 2022</p>
+                                        <p class="text-sm italic text-gray-500">Bilingualism: Language and Cognition, 25(3), 392-393</p>
+                                    </div>
+                                    
+                                    <!-- Paper 32 -->
+                                    <div class="pb-4 border-b border-gray-100">
+                                        <h4 class="font-semibold text-gray-900 mb-2"><a href="https://repository.eduhk.hk/en/publications/review-of-corpus-tools-for-vocabulary-teaching-and-learning/" target="_blank" rel="noopener noreferrer" class="hover:text-blue-600">Review of corpus tools for vocabulary teaching and learning.</a></h4>
+                                        <p class="text-sm text-gray-600 mb-1">MA, Q. & MEI, F., 2021</p>
+                                        <p class="text-sm italic text-gray-500">Journal of China Computer-Assisted Language Learning, 1(1), 177-190</p>
+                                    </div>
+                                    
+                                    <!-- Paper 33 -->
+                                    <div class="pb-4 border-b border-gray-100">
+                                        <h4 class="font-semibold text-gray-900 mb-2"><a href="https://repository.eduhk.hk/en/publications/the-effectiveness-of-corpus-based-training-on-collocation-use-in-/" target="_blank" rel="noopener noreferrer" class="hover:text-blue-600">The effectiveness of corpus-based training on collocation use in L2 writing for Chinese senior secondary school students.</a></h4>
+                                        <p class="text-sm text-gray-600 mb-1">FANG, L., MA, Q. & YAN, J. L., 2021</p>
+                                        <p class="text-sm italic text-gray-500">Journal of China Computer-Assisted Language Learning, 1(1), 80-109</p>
+                                    </div>
+                                    
+                                    <!-- Paper 34 -->
+                                    <div class="pb-4 border-b border-gray-100">
+                                        <h4 class="font-semibold text-gray-900 mb-2"><a href="https://repository.eduhk.hk/en/publications/using-formative-assessment-in-a-blended-efl-listening-course-stud/" target="_blank" rel="noopener noreferrer" class="hover:text-blue-600">Using formative assessment in a blended EFL listening course: Student perceptions of effectiveness and challenges.</a></h4>
+                                        <p class="text-sm text-gray-600 mb-1">TRAN, T. T. T. & MA, Q., Jul 2021</p>
+                                        <p class="text-sm italic text-gray-500">International Journal of Computer-Assisted Language Learning and Teaching, 11(3), 17-38</p>
+                                    </div>
+                                    
+                                    <!-- Paper 35 -->
+                                    <div class="pb-4 border-b border-gray-100">
+                                        <h4 class="font-semibold text-gray-900 mb-2"><a href="https://repository.eduhk.hk/en/publications/affordances-of-a-mobile-learnergenerated-tool-for-pupils-english-/" target="_blank" rel="noopener noreferrer" class="hover:text-blue-600">Affordances of a mobile learner-generated tool for pupils' English as a second language vocabulary learning: An ecological perspective.</a></h4>
+                                        <p class="text-sm text-gray-600 mb-1">SONG, Y. & MA, Q., Mar 2021</p>
+                                        <p class="text-sm italic text-gray-500">British Journal of Educational Technology, 52(2), 858-878</p>
+                                    </div>
+                                    
+                                    <!-- Paper 36 -->
+                                    <div class="pb-4 border-b border-gray-100">
+                                        <h4 class="font-semibold text-gray-900 mb-2"><a href="https://repository.eduhk.hk/en/publications/examining-the-role-of-inter-group-peer-online-feedback-on-wiki-wr/" target="_blank" rel="noopener noreferrer" class="hover:text-blue-600">Examining the role of inter-group peer online feedback on wiki writing in an EAP context.</a></h4>
+                                        <p class="text-sm text-gray-600 mb-1">MA, Q., 2020</p>
+                                        <p class="text-sm italic text-gray-500">Computer Assisted Language Learning, 33(3), 197-216</p>
+                                    </div>
+                                    
+                                    <!-- Paper 37 -->
+                                    <div class="pb-4 border-b border-gray-100">
+                                        <h4 class="font-semibold text-gray-900 mb-2"><a href="https://repository.eduhk.hk/en/publications/university-l2-learners-voices-and-experience-in-making-use-of-dic/" target="_blank" rel="noopener noreferrer" class="hover:text-blue-600">University L2 learners' voices and experience in making use of dictionary apps in Mobile Assisted Language Learning (MALL).</a></h4>
+                                        <p class="text-sm text-gray-600 mb-1">MA, Q., Oct 2019</p>
+                                        <p class="text-sm italic text-gray-500">International Journal of Computer-Assisted Language Learning and Teaching, 9(4), 18-36</p>
+                                    </div>
+                                    
+                                    <!-- Paper 38 -->
+                                    <div class="pb-4 border-b border-gray-100">
+                                        <h4 class="font-semibold text-gray-900 mb-2"><a href="https://repository.eduhk.hk/en/publications/review-of-the-book-how-vocabulary-is-learned-by-s-webb-amp-p-nati/" target="_blank" rel="noopener noreferrer" class="hover:text-blue-600">Book review – How vocabulary is learned, by Stuart Webb & Paul Nation, Oxford, 2017, 322 pp.</a></h4>
+                                        <p class="text-sm text-gray-600 mb-1">MA, Q., 2018</p>
+                                        <p class="text-sm italic text-gray-500">The Journal of Asia TEFL, 15(1), 250-251</p>
+                                    </div>
+                                    
+                                    <!-- Paper 39 -->
+                                    <div class="pb-4 border-b border-gray-100">
+                                        <h4 class="font-semibold text-gray-900 mb-2"><a href="https://repository.eduhk.hk/en/publications/a-multi-case-study-of-university-students-language-learning-exper-5/" target="_blank" rel="noopener noreferrer" class="hover:text-blue-600">A multi-case study of university students' language-learning experience mediated by mobile technologies: A socio-cultural perspective.</a></h4>
+                                        <p class="text-sm text-gray-600 mb-1">MA, Q., 2017</p>
+                                        <p class="text-sm italic text-gray-500">Computer Assisted Language Learning, 30(3-4), 183-203</p>
+                                    </div>
+                                    
+                                    <!-- Paper 40 -->
+                                    <div class="pb-4 border-b border-gray-100">
+                                        <h4 class="font-semibold text-gray-900 mb-2"><a href="https://repository.eduhk.hk/en/publications/teaching-young-learners-english-vocabulary-with-reading-based-exe-5/" target="_blank" rel="noopener noreferrer" class="hover:text-blue-600">Teaching young learners English vocabulary with reading-based exercises in a real classroom situation.</a></h4>
+                                        <p class="text-sm text-gray-600 mb-1">MA, Q. & SIN, C. H., 2015</p>
+                                        <p class="text-sm italic text-gray-500">Porta Linguarum, 23, 125-138</p>
+                                    </div>
+                                    
+                                    <!-- Paper 41 -->
+                                    <div class="pb-4 border-b border-gray-100">
+                                        <h4 class="font-semibold text-gray-900 mb-2"><a href="https://repository.eduhk.hk/en/publications/realising-personalised-vocabulary-learning-in-the-hong-kong-conte-5/" target="_blank" rel="noopener noreferrer" class="hover:text-blue-600">Realising personalised vocabulary learning in the Hong Kong context via a personalised curriculum featuring 'student-selected vocabulary'.</a></h4>
+                                        <p class="text-sm text-gray-600 mb-1">CHOI, M. L. & MA, Q., 2015</p>
+                                        <p class="text-sm italic text-gray-500">Language and Education, 29(1), 62-78</p>
+                                    </div>
+                                    
+                                    <!-- Paper 42 -->
+                                    <div class="pb-4 border-b border-gray-100">
+                                        <h4 class="font-semibold text-gray-900 mb-2"><a href="https://repository.eduhk.hk/en/publications/a-process-focused-learning-model-for-l2-vocabulary-acquisition-co-5/" target="_blank" rel="noopener noreferrer" class="hover:text-blue-600">A process-focused learning model for L2 vocabulary acquisition: Construction, implementation and validation.</a></h4>
+                                        <p class="text-sm text-gray-600 mb-1">MA, Q., 2015</p>
+                                        <p class="text-sm italic text-gray-500">International Journal of Applied Linguistics, 166(1), 127-162</p>
+                                    </div>
+                                    
+                                    <!-- Paper 43 -->
+                                    <div class="pb-4 border-b border-gray-100">
+                                        <h4 class="font-semibold text-gray-900 mb-2"><a href="https://repository.eduhk.hk/en/publications/a-contextualised-study-of-efl-learners-vocabulary-learning-approa-5/" target="_blank" rel="noopener noreferrer" class="hover:text-blue-600">A contextualised study of EFL learners' vocabulary learning approaches: Framework, learner approach and degree of success.</a></h4>
+                                        <p class="text-sm text-gray-600 mb-1">MA, Q., 2014</p>
+                                        <p class="text-sm italic text-gray-500">The Journal of AsiaTEFL, 11(3), 33-71</p>
+                                    </div>
+                                    
+                                    <!-- Paper 44 -->
+                                    <div class="pb-4 border-b border-gray-100">
+                                        <h4 class="font-semibold text-gray-900 mb-2"><a href="https://repository.eduhk.hk/en/publications/matching-vocabulary-learning-process-with-learning-outcome-in-l2--5/" target="_blank" rel="noopener noreferrer" class="hover:text-blue-600">Matching vocabulary learning process with learning outcome in L2 academic writing: An exploratory case study.</a></h4>
+                                        <p class="text-sm text-gray-600 mb-1">MA, Q., Jun 2013</p>
+                                        <p class="text-sm italic text-gray-500">Linguistics and Education, 24(2), 237-246</p>
+                                    </div>
+                                    
+                                    <!-- Paper 45 -->
+                                    <div class="pb-4 border-b border-gray-100">
+                                        <h4 class="font-semibold text-gray-900 mb-2"><a href="https://repository.eduhk.hk/en/publications/upholding-standards-of-academic-writing-of-chinese-students-in-ch-5/" target="_blank" rel="noopener noreferrer" class="hover:text-blue-600">Upholding standards of academic writing of Chinese students in China English.</a></h4>
+                                        <p class="text-sm text-gray-600 mb-1">MA, Q., Sept 2012</p>
+                                        <p class="text-sm italic text-gray-500">Changing English, 19(3), 349-357</p>
+                                    </div>
+                                    
+                                    <!-- Paper 46 -->
+                                    <div class="pb-4 border-b border-gray-100">
+                                        <h4 class="font-semibold text-gray-900 mb-2"><a href="https://repository.eduhk.hk/en/publications/vocabulary-learning-and-teaching-beliefs-of-pre-service-and-in-se-5/" target="_blank" rel="noopener noreferrer" class="hover:text-blue-600">Vocabulary learning and teaching beliefs of pre-service and in-service teachers in Hong Kong and mainland China.</a></h4>
+                                        <p class="text-sm text-gray-600 mb-1">GAO, X. & MA, Q., Nov 2011</p>
+                                        <p class="text-sm italic text-gray-500">Language Awareness, 20(4), 327-342</p>
+                                    </div>
+                                    
+                                    <!-- Paper 47 -->
+                                    <div class="pb-4 border-b border-gray-100">
+                                        <h4 class="font-semibold text-gray-900 mb-2"><a href="https://repository.eduhk.hk/en/publications/overcoming-hurdles-to-chinese-students-learning-of-english-lexis/" target="_blank" rel="noopener noreferrer" class="hover:text-blue-600">Overcoming hurdles to Chinese students' learning of English lexis.</a></h4>
+                                        <p class="text-sm text-gray-600 mb-1">MA, Q. & KELLY, P., Dec 2009</p>
+                                        <p class="text-sm italic text-gray-500">Changing English, 16(4), 405-412</p>
+                                    </div>
+                                    
+                                    <!-- Paper 48 -->
+                                    <div class="pb-4 border-b border-gray-100">
+                                        <h4 class="font-semibold text-gray-900 mb-2"><a href="https://repository.eduhk.hk/en/publications/empirical-call-evaluation-the-relationship-between-learning-proce/" target="_blank" rel="noopener noreferrer" class="hover:text-blue-600">Empirical CALL evaluation: The relationship between learning process and learning outcome.</a></h4>
+                                        <p class="text-sm text-gray-600 mb-1">MA, Q., Sept 2008</p>
+                                        <p class="text-sm italic text-gray-500">CALICO Journal, 26(1), 108-122</p>
+                                    </div>
+                                    
+                                    <!-- Paper 49 -->
+                                    <div class="pb-4 border-b border-gray-100">
+                                        <h4 class="font-semibold text-gray-900 mb-2"><a href="https://repository.eduhk.hk/en/publications/from-monitoring-users-to-controlling-user-actions-a-new-perspecti/" target="_blank" rel="noopener noreferrer" class="hover:text-blue-600">From monitoring users to controlling user actions: A new perspective on the user-centred approach to CALL.</a></h4>
+                                        <p class="text-sm text-gray-600 mb-1">MA, Q., Oct 2007</p>
+                                        <p class="text-sm italic text-gray-500">Computer Assisted Language Learning, 20(4), 297-321</p>
+                                    </div>
+                                    
+                                    <!-- Paper 50 -->
+                                    <div class="pb-4 border-b border-gray-100">
+                                        <h4 class="font-semibold text-gray-900 mb-2"><a href="https://repository.eduhk.hk/en/publications/computer-assisted-vocabulary-learning-design-and-evaluation/" target="_blank" rel="noopener noreferrer" class="hover:text-blue-600">Computer assisted vocabulary learning: Design and evaluation.</a></h4>
+                                        <p class="text-sm text-gray-600 mb-1">MA, Q. & KELLY, P., Feb 2006</p>
+                                        <p class="text-sm italic text-gray-500">Computer Assisted Language Learning, 19(1), 15-45</p>
+                                    </div>
+                                </div>
+                            </div>
+                            </div>
+                            <!-- End Journal Articles Tab -->
+
+                            <!-- Tab Content: Refereed Academic Books -->
+                            <div id="academic-books" class="tab-content-pane">
+                            <!-- Refereed Academic Books -->
+                            <div class="mb-8">
+                                <h3 class="text-lg font-bold text-blue-700 mb-4">Refereed Academic Books</h3>
+                                <div class="space-y-4">
+                                    <div class="pb-4 border-b border-gray-100">
+                                        <p class="text-gray-700"><span class="font-medium">Ma, Q, Lee, H., & Crosthwaite, P. (Forthcoming).</span> <span class="font-semibold text-gray-900">Advancing English Language Teaching: A Guide to Corpus-Based Language Pedagogy</span>. Springer.</p>
+                                    </div>
+                                    <div class="pb-4 border-b border-gray-100">
+                                        <p class="text-gray-700"><span class="font-medium">Alm, A, Lai, C., & Ma, Q. (2025).</span> <span class="font-semibold text-gray-900">Transitions in CALL</span>. Castledown.</p>
+                                    </div>
+                                    <div class="pb-4 border-b border-gray-100">
+                                        <p class="text-gray-700"><span class="font-medium">Wang, L., Ma, Q., & Zou, D. (2025).</span> <span class="font-semibold text-gray-900">Technology-Enhanced and Corpus-based Language Learning and Teaching: Innovations and Insights</span>. Cambridge Scholars Publishing.</p>
+                                    </div>
+                                    <div>
+                                        <p class="text-gray-700"><span class="font-medium">Ma, Q. (2009).</span> <span class="font-semibold text-gray-900">Second Language Vocabulary Acquisition</span>. New York, Berlin, Oxford: Peter Lang.</p>
+                                    </div>
+                                </div>
+                            </div>
+                            </div>
+                            <!-- End Academic Books Tab -->
+
+                            <!-- Tab Content: Refereed Book Chapters -->
+                            <div id="book-chapters" class="tab-content-pane">
+                            <!-- Refereed Book Chapters -->
+                            <div class="mb-8">
+                                <h3 class="text-lg font-bold text-blue-700 mb-4">Refereed Book Chapters (16 chapters)</h3>
+                                <div class="space-y-4">
+                                    <!-- Book Chapter 1 -->
+                                    <div class="pb-4 border-b border-gray-100">
+                                        <h4 class="font-semibold text-gray-900 mb-2"><a href="https://books.google.com.hk/books?hl=en&lr=&id=wHxCEQAAQBAJ&oi=fnd&pg=PA77&dq=10.29140/9781763711600-05&ots=Paw70aClJG&sig=WwdxBourouAR5AFjHNRCdxY_kkU&redir_esc=y#v=onepage&q&f=false" target="_blank" rel="noopener noreferrer" class="hover:text-blue-600">AI and language assessment.</a></h4>
+                                        <p class="text-sm text-gray-600 mb-1">Crosthwaite, P., & Ma, Q. (2025)</p>
+                                        <p class="text-sm italic text-gray-500">In Y. Wang, A. Alm, & G. Dizon (Eds.), Insights into AI and language teaching and learning (pp. 77-96). Castledown.</p>
+                                    </div>
+                                    
+                                    <!-- Book Chapter 2 -->
+                                    <div class="pb-4 border-b border-gray-100">
+                                        <h4 class="font-semibold text-gray-900 mb-2"><a href="https://link.springer.com/rwe/10.1007/978-3-031-51447-0_88-1" target="_blank" rel="noopener noreferrer" class="hover:text-blue-600">Corpus Literacy and Data-Driven Learning.</a></h4>
+                                        <p class="text-sm text-gray-600 mb-1">Ma, Q. (2025)</p>
+                                        <p class="text-sm italic text-gray-500">In L. McCallum & D. Tafazoli, (Eds.), The Palgrave Encyclopedia of Computer-Assisted Language Learning. Palgrave Macmillan, Cham.</p>
+                                    </div>
+                                    
+                                    <!-- Book Chapter 3 -->
+                                    <div class="pb-4 border-b border-gray-100">
+                                        <h4 class="font-semibold text-gray-900 mb-2"><a href="https://colab.ws/articles/10.1007%2F978-3-031-51447-0_307-1" target="_blank" rel="noopener noreferrer" class="hover:text-blue-600">Lessons Learned from Emergency Remote Teaching.</a></h4>
+                                        <p class="text-sm text-gray-600 mb-1">Wu, W., Ma, Q. (2025)</p>
+                                        <p class="text-sm italic text-gray-500">In: McCallum, L., Tafazoli, D. (Eds) The Palgrave Encyclopedia of Computer-Assisted Language Learning. Palgrave Macmillan, Cham.</p>
+                                    </div>
+                                    
+                                    <!-- Book Chapter 4 -->
+                                    <div class="pb-4 border-b border-gray-100">
+                                        <h4 class="font-semibold text-gray-900 mb-2"><a href="https://link.springer.com/rwe/10.1007/978-3-031-51447-0_182-1" target="_blank" rel="noopener noreferrer" class="hover:text-blue-600">AI-based approaches to assessing speaking skills.</a></h4>
+                                        <p class="text-sm text-gray-600 mb-1">Zou, B., & Ma, Q. (2025)</p>
+                                        <p class="text-sm italic text-gray-500">In L. McCallum & D. Tafazoli, (Eds.), The Palgrave Encyclopedia of Computer-Assisted Language Learning. Palgrave Macmillan, Cham.</p>
+                                    </div>
+                                    
+                                    <!-- Book Chapter 5 -->
+                                    <div class="pb-4 border-b border-gray-100">
+                                        <h4 class="font-semibold text-gray-900 mb-2">Corpus-based language pedagogy for pre-service and in-service teachers: Theory, practice and research.</h4>
+                                        <p class="text-sm text-gray-600 mb-1">Ma, Q. (2024)</p>
+                                        <p class="text-sm italic text-gray-500">In P. Crosthwaite (Ed.), Corpora for Language Learning: Bridging the Research-Practice Divide (pp. 174-186). Routledge. (B)</p>
+                                    </div>
+                                    
+                                    <!-- Book Chapter 6 -->
+                                    <div class="pb-4 border-b border-gray-100">
+                                        <h4 class="font-semibold text-gray-900 mb-2"><a href="https://link.springer.com/chapter/10.1007/978-981-99-0514-0_12" target="_blank" rel="noopener noreferrer" class="hover:text-blue-600">Emergency online teaching: Voices of Hong Kong CALL lecturers.</a></h4>
+                                        <p class="text-sm text-gray-600 mb-1">Wu. W., Ma, Q., Shi, H., & Tong, E. (2023)</p>
+                                        <p class="text-sm italic text-gray-500">In D. Tafazoli & M. Picard (Eds.), Handbook of CALL Teacher Education and Professional Development (pp. 193-208).</p>
+                                    </div>
+                                    
+                                    <!-- Book Chapter 7 -->
+                                    <div class="pb-4 border-b border-gray-100">
+                                        <h4 class="font-semibold text-gray-900 mb-2"><a href="https://repository.eduhk.hk/en/publications/enhancing-language-learning-in-private-tutoring/" target="_blank" rel="noopener noreferrer" class="hover:text-blue-600">Online learner communities for fostering autonomous learning beyond the classroom.</a></h4>
+                                        <p class="text-sm text-gray-600 mb-1">Wu, W., & Ma, Q. (2022)</p>
+                                        <p class="text-sm italic text-gray-500">In H. Reinders, C. Lai, & P. Sundqvist. (Eds.), The Routledge Handbook of Language Learning and Teaching Beyond the Classroom (pp. 258-270). England: Routledge.</p>
+                                    </div>
+                                    
+                                    <!-- Book Chapter 8 -->
+                                    <div class="pb-4 border-b border-gray-100">
+                                        <h4 class="font-semibold text-gray-900 mb-2"><a href="https://www.igi-global.com/dictionary/how-do-university-l2-learners-make-use-of-mobile-dictionary-apps-to-become-autonomous-learners/106442" target="_blank" rel="noopener noreferrer" class="hover:text-blue-600">How do university L2 learners make use of mobile dictionary apps to become autonomous learners?</a></h4>
+                                        <p class="text-sm text-gray-600 mb-1">Ma, Q., & Yan, J. (2022)</p>
+                                        <p class="text-sm italic text-gray-500">In B. Zou, M. Thomas, D. Barr & W. Jia. (Eds.), Emerging Concepts in Technology-Enhanced Language Teaching and Learning (pp. 177-199). IGI-Global.</p>
+                                    </div>
+                                    
+                                    <!-- Book Chapter 9 -->
+                                    <div class="pb-4 border-b border-gray-100">
+                                        <h4 class="font-semibold text-gray-900 mb-2"><a href="https://repository.eduhk.hk/en/publications/chinese-efl-online-technology-and-teacher-education-a-multi-case-/" target="_blank" rel="noopener noreferrer" class="hover:text-blue-600">Chinese EFL online technology and teacher education: A multi-case study from an ecological perspective.</a></h4>
+                                        <p class="text-sm text-gray-600 mb-1">Hu, H., Ma, Q., & Tang, J. (2020)</p>
+                                        <p class="text-sm italic text-gray-500">In H-S. Kang, D-S. Shin & T. Cimasko (Eds.), Online Education for Teachers of English as a Global Language (pp. 187-209). New York: Routledge.</p>
+                                    </div>
+                                    
+                                    <!-- Book Chapter 10 -->
+                                    <div class="pb-4 border-b border-gray-100">
+                                        <h4 class="font-semibold text-gray-900 mb-2"><a href="https://link.springer.com/chapter/10.1007/978-981-13-6653-6_3" target="_blank" rel="noopener noreferrer" class="hover:text-blue-600">Measuring the vocabulary knowledge of Hong Kong primary school second language learners through word associations: Implications for reading literacy.</a></h4>
+                                        <p class="text-sm text-gray-600 mb-1">Ma, Q. & Lee, H. Y. (2019)</p>
+                                        <p class="text-sm italic text-gray-500">In B. L. Reynolds & F. Teng (Eds.), English Literacy Instruction for Chinese Speakers (pp. 35-56). Singapore: Palgrave Macmillan.</p>
+                                    </div>
+                                    
+                                    <!-- Book Chapter 11 -->
+                                    <div class="pb-4 border-b border-gray-100">
+                                        <h4 class="font-semibold text-gray-900 mb-2"><a href="https://onlinelibrary.wiley.com/doi/abs/10.1002/9781118914069.ch4" target="_blank" rel="noopener noreferrer" class="hover:text-blue-600">Technologies for teaching and learning L2 vocabulary.</a></h4>
+                                        <p class="text-sm text-gray-600 mb-1">Ma, Q. (2017)</p>
+                                        <p class="text-sm italic text-gray-500">In C. A. Chapelle & S. Sauro (Eds.), The Handbook of Technology and Second Language Teaching and Learning (pp. 45-61). Oxford: Wiley Blackwell.</p>
+                                    </div>
+                                    
+                                    <!-- Book Chapter 12 -->
+                                    <div class="pb-4 border-b border-gray-100">
+                                        <h4 class="font-semibold text-gray-900 mb-2"><a href="https://link.springer.com/chapter/10.1007/978-3-319-53110-6_13" target="_blank" rel="noopener noreferrer" class="hover:text-blue-600">The nativization of English in China.</a></h4>
+                                        <p class="text-sm text-gray-600 mb-1">Ma, Q., & Xu, Z. (2017)</p>
+                                        <p class="text-sm italic text-gray-500">In Z. Xu, D. He, & D. Deterding (Eds.), Researching Chinese English: The State of the Art (pp. 189-201). Dordrecht: Springer.</p>
+                                    </div>
+                                    
+                                    <!-- Book Chapter 13 -->
+                                    <div class="pb-4 border-b border-gray-100">
+                                        <h4 class="font-semibold text-gray-900 mb-2"><a href="https://repository.eduhk.hk/en/publications/community-of-practice-building-a-mobile-learning-community-in-a-h-4/#:~:text=It%20is%20hoped%20that%20this,Higher%20education" target="_blank" rel="noopener noreferrer" class="hover:text-blue-600">Community of practice: Building a mobile learning community in a higher education institution to promote effective teaching and learning.</a></h4>
+                                        <p class="text-sm text-gray-600 mb-1">Wang, L., & Ma, Q. (2017)</p>
+                                        <p class="text-sm italic text-gray-500">In S. C. Kong, T. L. Wong, M. Yang, C. F. Chow, & K. H. Tse (Eds.), Emerging Practices in Scholarship of Learning and Teaching in a Digital Era (pp. 19-38). Singapore: Springer.</p>
+                                    </div>
+                                    
+                                    <!-- Book Chapter 14 -->
+                                    <div class="pb-4 border-b border-gray-100">
+                                        <h4 class="font-semibold text-gray-900 mb-2">An evidence-based study of Hong Kong university students' mobile assisted language learning (MALL) experience.</h4>
+                                        <p class="text-sm text-gray-600 mb-1">Ma, Q. (2016)</p>
+                                        <p class="text-sm italic text-gray-500">In A. Gimeno, M. Levy, F. Blin, & D. Barr (Eds.), WorldCALL: Sustainability and Computer-Assisted Language Learning (pp. 211-229). New York: Bloomsbury.</p>
+                                    </div>
+                                    
+                                    <!-- Book Chapter 15 -->
+                                    <div class="pb-4 border-b border-gray-100">
+                                        <h4 class="font-semibold text-gray-900 mb-2">Computer assisted vocabulary learning: Framework and tracking user data.</h4>
+                                        <p class="text-sm text-gray-600 mb-1">Ma, Q. (2013)</p>
+                                        <p class="text-sm italic text-gray-500">In P. Hubbard, M. Schulze, & B. Smith (Eds.), Learner-Computer Interaction in Language Education (pp. 230-243). San Marcos, Texas: Computer Assisted Language Instruction Consortium (CALICO).</p>
+                                    </div>
+                                    
+                                    <!-- Book Chapter 16 -->
+                                    <div class="pb-4 border-b border-gray-100">
+                                        <h4 class="font-semibold text-gray-900 mb-2">In search of ways in which Chinese English teachers can come to change and improve their learners' vocabulary learning strategy use.</h4>
+                                        <p class="text-sm text-gray-600 mb-1">Ma, Q. (2011)</p>
+                                        <p class="text-sm italic text-gray-500">In S. Breidbach, D. Elsner, & A. Young (Eds.), Language Awareness in Teacher Education: Cultural-Political and Social-Educational Perspectives (pp. 158-173). Frankfurt/M.: Peter Lang.</p>
+                                    </div>
+                                </div>
+                            </div>
+                            </div>
+                            <!-- End Book Chapters Tab -->
+
+                           <!-- Tab Content: Guest Editor for Special Issues -->
+                            <div id="guest-editor" class="tab-content-pane">
+                            <!-- Guest Editor for Special Issues -->
+                            <div>
+                                <h3 class="text-lg font-bold text-blue-700 mb-4">Guest Editor for Special Issues</h3>
+                                <div class="space-y-4">
+                                    <div class="pb-4 border-b border-gray-100">
+                                        <h4 class="font-semibold text-gray-900 mb-2"><a href="https://www.tandfonline.com/toc/ncal20/current" target="_blank" rel="noopener noreferrer" class="hover:text-blue-600">Corpus-Based Language Pedagogy in the AI Era [Special issue].</a></h4>
+                                        <p class="text-sm text-gray-600 mb-1">Ma, Q., & Crosthwaite, P. (2024)</p>
+                                        <p class="text-sm italic text-gray-500">Computer Assisted Language Learning</p>
+                                    </div>
+                                    <div class="pb-4 border-b border-gray-100">
+                                        <h4 class="font-semibold text-gray-900 mb-2"><a href="https://www.mdpi.com/journal/education/special_issues/3YAK93L07C" target="_blank" rel="noopener noreferrer" class="hover:text-blue-600">Advancing Second Language Learning and Teaching through Innovative Technologies and Digital Tools [Special issue].</a></h4>
+                                        <p class="text-sm text-gray-600 mb-1">Ma, Q., & Lai, C. (2024)</p>
+                                        <p class="text-sm italic text-gray-500">Education Sciences</p>
+                                    </div>
+                                    <div>
+                                        <h4 class="font-semibold text-gray-900 mb-2"><a href="https://www.degruyterbrill.com/journal/key/jccall/4/1/html" target="_blank" rel="noopener noreferrer" class="hover:text-blue-600">Online Technologies for Language Learning and Teaching: Innovations, Practices and Perceptions from Students and Teachers [Special issue].</a></h4>
+                                        <p class="text-sm text-gray-600 mb-1">Ma, Q., & Wang, L. (2024)</p>
+                                        <p class="text-sm italic text-gray-500">Journal of China-Computer Assisted Language Learning, 4(1)</p>
+                                    </div>
+                                </div>
+                            </div>
+                            </div>
+                            <!-- End Guest Editor Tab -->
+                            
+                        </div>
+                    </div>
+                </section>
+
+                <!-- 5. Research Grants -->
+                <section id="research-grants" class="vscode-section scroll-mt-24">
+                    <div class="collapsible-section" onclick="toggleSection('grants')">
+                        <h2 class="section-title">
+                            <span class="section-icon">💰</span>
+                            Research Grants
+                        </h2>
+                        <svg id="chevron-grants" class="chevron" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <polyline points="6 9 12 15 18 9"></polyline>
+                        </svg>
+                    </div>
+                    <div id="content-grants" class="collapsible-content">
+                        <div class="content-inner">
+                            
+                            <!-- External Grants -->
+                            <div class="mb-8">
+                                <h3 class="text-lg font-bold text-blue-700 mb-4">External Grants</h3>
+                                <div class="space-y-3">
+                                    <div class="flex items-start text-gray-700 leading-relaxed">
+                                        <span class="text-yellow-500 mr-3 mt-1 flex-shrink-0">🧪</span>
+                                        <p><span class="font-medium">2025.9-2027.12.</span> AI-empowered CBLP-supported Writing Pedagogy and Resources for EAP Teachers and Students across Different Disciplines (850,000 $HK, *IICA T5014; PI)</p>
+                                    </div>
+                                    <div class="flex items-start text-gray-700 leading-relaxed">
+                                        <span class="text-yellow-500 mr-3 mt-1 flex-shrink-0">🧪</span>
+                                        <p><span class="font-medium">2024.1-2026.6.</span> Investigating student teachers' TPACK development for corpus technology and their self-efficacies for independent language learning and teaching: a mixed method study (469,560 $HK, *GRF; PI)</p>
+                                    </div>
+                                    <div class="flex items-start text-gray-700 leading-relaxed">
+                                        <span class="text-yellow-500 mr-3 mt-1 flex-shrink-0">🧪</span>
+                                        <p><span class="font-medium">2019–2023.</span> A Study on Teaching and Assessment of Critical Thinking-Oriented English Writing Based on Toulmin Theory (CNY 200,000, *National Social Science of China; Co-I)</p>
+                                    </div>
+                                    <div class="flex items-start text-gray-700 leading-relaxed">
+                                        <span class="text-yellow-500 mr-3 mt-1 flex-shrink-0">🧪</span>
+                                        <p><span class="font-medium">2019.9-2021.9.</span> A Self-Regulated Vocabulary Learning Approach Supported by a Mobile-User-Generated-Content Tool for Pupils in Hong Kong (522,720 $HK, *GRF; Co-I)</p>
+                                    </div>
+                                    <div class="flex items-start text-gray-700 leading-relaxed">
+                                        <span class="text-yellow-500 mr-3 mt-1 flex-shrink-0">🧪</span>
+                                        <p><span class="font-medium">2019.4-2022.3.</span> A Self-Regulated and Personalised Vocabulary Learning Approach Mediated by Mobile Technologies for University Students (745,980 $HK, *GRF; PI)</p>
+                                    </div>
+                                    <div class="flex items-start text-gray-700 leading-relaxed">
+                                        <span class="text-yellow-500 mr-3 mt-1 flex-shrink-0">🧪</span>
+                                        <p><span class="font-medium">2019.1-2020.12.</span> The Relationship between Learners' Out-of-Class Autonomous Technology-Enhanced Language Learning and Their Vocabulary Knowledge (529,935 $HK, *GRF; Co-investigator (Co-I))</p>
+                                    </div>
+                                    <div class="flex items-start text-gray-700 leading-relaxed">
+                                        <span class="text-yellow-500 mr-3 mt-1 flex-shrink-0">🧪</span>
+                                        <p><span class="font-medium">2012.1–2013.12.</span> *Wrong to Right: A Cognitive Linguistic Approach to the Analysis of Second Language Errors (574, 080 $HK, *GRF; Co-I)</p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Internal Grants -->
+                            <div>
+                                <h3 class="text-lg font-bold text-blue-700 mb-4">Internal Grants</h3>
+                                <div class="space-y-3">
+                                    <div class="flex items-start text-gray-700 leading-relaxed">
+                                        <span class="text-yellow-500 mr-3 mt-1 flex-shrink-0">🧪</span>
+                                        <p><span class="font-medium">2023.9-2026.8:</span> Asian literature in English: Creativity, translanguaging, and language education (2,608,000.00 $HK, CRAC 04A40; PI)</p>
+                                    </div>
+                                    <div class="flex items-start text-gray-700 leading-relaxed">
+                                        <span class="text-yellow-500 mr-3 mt-1 flex-shrink-0">🧪</span>
+                                        <p><span class="font-medium">2023.1-2025.12:</span> Enhancing Digital Literacy for English Pronunciation Learners in the Era of Technology Empowerment. Scientific Research Porgramme of the Department of Education of Hubei Province (No. B2023408) (CNY 20,000; Co-I)</p>
+                                    </div>
+                                    <div class="flex items-start text-gray-700 leading-relaxed">
+                                        <span class="text-yellow-500 mr-3 mt-1 flex-shrink-0">🧪</span>
+                                        <p><span class="font-medium">2022.4-2025.8:</span> Creating an international community of English teachers with reinforced learning of a corpus-based language pedagogy (1,800,000 $HK, CRA 4A32; PI)</p>
+                                    </div>
+                                    <div class="flex items-start text-gray-700 leading-relaxed">
+                                        <span class="text-yellow-500 mr-3 mt-1 flex-shrink-0">🧪</span>
+                                        <p><span class="font-medium">2019.9-2022.8:</span> The development and evaluation of an innovative corpus-based language teaching approach among school in-service teachers in the Greater Bay Area or beyond (1,200,000 $HK, CRAC; PI)</p>
+                                    </div>
+                                    <div class="flex items-start text-gray-700 leading-relaxed">
+                                        <span class="text-yellow-500 mr-3 mt-1 flex-shrink-0">🧪</span>
+                                        <p><span class="font-medium">2017.9-2018.8:</span> A self-regulated and personalised vocabulary learning approach mediated by mobile technologies for Hong Kong and mainland Chinese university students (80,000 $HK, IRG; PI)</p>
+                                    </div>
+                                    <div class="flex items-start text-gray-700 leading-relaxed">
+                                        <span class="text-yellow-500 mr-3 mt-1 flex-shrink-0">🧪</span>
+                                        <p><span class="font-medium">2017.6-2018.5:</span> Educational Linguistics 2.0 – The use of corpora in language teaching (250,000$HK, KTF; PI)</p>
+                                    </div>
+                                    <div class="flex items-start text-gray-700 leading-relaxed">
+                                        <span class="text-yellow-500 mr-3 mt-1 flex-shrink-0">🧪</span>
+                                        <p><span class="font-medium">2015.9-2016.8:</span> Investigation of university students' self-regulated mobile-assisted vocabulary learning (MAVL) across different language learning contexts (100,000 $HK, IRG; PI)</p>
+                                    </div>
+                                    <div class="flex items-start text-gray-700 leading-relaxed">
+                                        <span class="text-yellow-500 mr-3 mt-1 flex-shrink-0">🧪</span>
+                                        <p><span class="font-medium">2014.12-2015.12:</span> A comparative multi-case study of Hong Kong and mainland Chinese university students' self-regulated mobile-assisted vocabulary learning (MAVL) (100,000 $HK, IRG; PI)</p>
+                                    </div>
+                                    <div class="flex items-start text-gray-700 leading-relaxed">
+                                        <span class="text-yellow-500 mr-3 mt-1 flex-shrink-0">🧪</span>
+                                        <p><span class="font-medium">2012.3–2013.3:</span> Investigating the Features of Chinese Students' Written English from a World Englishes' Perspective (35,000 $HK, DRG; PI)</p>
+                                    </div>
+                                    <div class="flex items-start text-gray-700 leading-relaxed">
+                                        <span class="text-yellow-500 mr-3 mt-1 flex-shrink-0">🧪</span>
+                                        <p><span class="font-medium">2010.7–2011.6:</span> Matching Learning Process with Learning Outcome: Focusing on L2 Vocabulary Acquisition (20,000 $HK, DRG; PI)</p>
+                                    </div>
+                                    <div class="flex items-start text-gray-700 leading-relaxed">
+                                        <span class="text-yellow-500 mr-3 mt-1 flex-shrink-0">🧪</span>
+                                        <p><span class="font-medium">2009.8–2010.10:</span> Comparing Pre-service and In-service Teachers' Vocabulary Instruction Beliefs (20,000 $HK, DRG; PI)</p>
+                                    </div>
+                                    <div class="flex items-start text-gray-700 leading-relaxed">
+                                        <span class="text-yellow-500 mr-3 mt-1 flex-shrink-0">🧪</span>
+                                        <p><span class="font-medium">2009.3–2010.7:</span> Assessing Vocabulary Strategy Use through a Process-Oriented Learning Approach (199,600 $HK, IRG; PI)</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- 6. Doctorate Supervision -->
+                <section id="doctorate-supervision" class="vscode-section scroll-mt-24">
+                    <div class="collapsible-section" onclick="toggleSection('supervision')">
+                        <h2 class="section-title">
+                            <span class="section-icon">🎓</span>
+                            Doctorate Supervision
+                        </h2>
+                        <svg id="chevron-supervision" class="chevron" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <polyline points="6 9 12 15 18 9"></polyline>
+                        </svg>
+                    </div>
+                    <div id="content-supervision" class="collapsible-content">
+                        <div class="content-inner">
+                            
+                            <!-- Completed -->
+                            <div class="mb-8">
+                                <h3 class="text-lg font-bold text-blue-700 mb-4">Completed (26 students)</h3>
+                                <div class="space-y-3">
+                                    <div class="flex items-start text-gray-700 leading-relaxed">
+                                        <span class="text-yellow-500 mr-3 mt-1 flex-shrink-0">🎓</span>
+                                        <p><span class="font-medium">2021 - 2025:</span> Principal supervisor of Yan Jiahao's PhD Thesis; title: Improving novice researchers' literature review writing with corpus-based language pedagogy: Focusing on rhetorical functions and move structures, EdUHK (viva date: June 10).</p>
+                                    </div>
+                                    <div class="flex items-start text-gray-700 leading-relaxed">
+                                        <span class="text-yellow-500 mr-3 mt-1 flex-shrink-0">🎓</span>
+                                        <p><span class="font-medium">2017 - 2023:</span> Principal supervisor of Guan Chao's EdD thesis; title: Incorporating DIY Corpus into English Writing in a Higher Vocational Institute in China: Students' Outcomes and Their Perceptions, EdUHK.</p>
+                                    </div>
+                                    <div class="flex items-start text-gray-700 leading-relaxed">
+                                        <span class="text-yellow-500 mr-3 mt-1 flex-shrink-0">🎓</span>
+                                        <p><span class="font-medium">2018 – 2023:</span> Principal supervisor of TRAN Thi Thanh Thao's PhD Thesis; title: Exploration of a Technology-Enhanced Self-Regulation Training Model for Enhancing Students' Academic Writing Skills and Self-Regulated Writing Capacities in the Vietnamese Tertiary Context, EdUHK (Hong Kong PhD Fellowship Scheme).</p>
+                                    </div>
+                                    <div class="flex items-start text-gray-700 leading-relaxed">
+                                        <span class="text-yellow-500 mr-3 mt-1 flex-shrink-0">🎓</span>
+                                        <p><span class="font-medium">2017 – 2022:</span> Principal supervisor of Lu Jinmiao's EdD thesis; title: Localising Task-Based Language Teaching in China's Examination-oriented Context: Exploring the Effectiveness of a Localised Task-Based Language Teaching Form on Oral Performance, EdUHK.</p>
+                                    </div>
+                                    <div class="flex items-start text-gray-700 leading-relaxed">
+                                        <span class="text-yellow-500 mr-3 mt-1 flex-shrink-0">🎓</span>
+                                        <p><span class="font-medium">2013 – 2016:</span> Principal supervisor of Yu Aihui's EdD thesis; title: A Study of "Chineseness" in a Chinese English Literary Work from the Perspectives of Sociolinguistics and Cultural Linguistics, EdUHK.</p>
+                                    </div>
+                                    <div class="flex items-start text-gray-700 leading-relaxed">
+                                        <span class="text-yellow-500 mr-3 mt-1 flex-shrink-0">🎓</span>
+                                        <p><span class="font-medium">2010 – 2013:</span> Principal supervisor of Choi Muilan's EdD thesis; title: Realizing Personalized Learning with L2 Vocabulary Learning and Teaching, EdUHK.</p>
+                                    </div>
+                                    <div class="flex items-start text-gray-700 leading-relaxed">
+                                        <span class="text-yellow-500 mr-3 mt-1 flex-shrink-0">🎓</span>
+                                        <p><span class="font-medium">2011 – 2013:</span> Principal supervisor of Qiu Xiaoyuan's EdD thesis; title: Understanding Mainland Chinese Junior Secondary School Students' Metacognitive Strategies in Reading English and Chinese, EdUHK.</p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- On-going -->
+                            <div>
+                                <h3 class="text-lg font-bold text-blue-700 mb-4">On-going supervision (9 students)</h3>
+                                <div class="space-y-3">
+                                    <div class="flex items-start text-gray-700 leading-relaxed">
+                                        <span class="text-yellow-500 mr-3 mt-1 flex-shrink-0">🎓</span>
+                                        <p><span class="font-medium">2025–Present:</span> Principal supervisor of Zhao Yingtong's PhD thesis, EdUHK</p>
+                                    </div>
+                                    <div class="flex items-start text-gray-700 leading-relaxed">
+                                        <span class="text-yellow-500 mr-3 mt-1 flex-shrink-0">🎓</span>
+                                        <p><span class="font-medium">2025–Present:</span> Principal supervisor of Lan Shanxik's EdD thesis, EdUHK</p>
+                                    </div>
+                                    <div class="flex items-start text-gray-700 leading-relaxed">
+                                        <span class="text-yellow-500 mr-3 mt-1 flex-shrink-0">🎓</span>
+                                        <p><span class="font-medium">2025–Present:</span> Principal supervisor of Wei Qi's EdD thesis, EdUHK</p>
+                                    </div>
+                                    <div class="flex items-start text-gray-700 leading-relaxed">
+                                        <span class="text-yellow-500 mr-3 mt-1 flex-shrink-0">🎓</span>
+                                        <p><span class="font-medium">2025–Present:</span> Principal supervisor of Hubert Lee's PhD thesis, EdUHK</p>
+                                    </div>
+                                    <div class="flex items-start text-gray-700 leading-relaxed">
+                                        <span class="text-yellow-500 mr-3 mt-1 flex-shrink-0">🎓</span>
+                                        <p><span class="font-medium">2023–Present:</span> Principal supervisor of Liu Jing's EdD thesis, EdUHK</p>
+                                    </div>
+                                    <div class="flex items-start text-gray-700 leading-relaxed">
+                                        <span class="text-yellow-500 mr-3 mt-1 flex-shrink-0">🎓</span>
+                                        <p><span class="font-medium">2023–Present:</span> Principal supervisor of Sophia Huang's EdD thesis, EdUHK</p>
+                                    </div>
+                                    <div class="flex items-start text-gray-700 leading-relaxed">
+                                        <span class="text-yellow-500 mr-3 mt-1 flex-shrink-0">🎓</span>
+                                        <p><span class="font-medium">2023–Present:</span> Principal supervisor of Fannie Mei's EdD thesis, EdUHK</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- 7. External Appointment -->
+                <section id="external-appointment" class="vscode-section scroll-mt-24">
+                    <div class="collapsible-section" onclick="toggleSection('appointment')">
+                        <h2 class="section-title">
+                            <span class="section-icon">🌍</span>
+                            External Appointment
+                        </h2>
+                        <svg id="chevron-appointment" class="chevron" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <polyline points="6 9 12 15 18 9"></polyline>
+                        </svg>
+                    </div>
+                    <div id="content-appointment" class="collapsible-content">
+                        <div class="content-inner space-y-3">
+                            <div class="flex items-start text-gray-700 leading-relaxed">
+                                <span class="text-blue-600 mr-3 mt-1.5 flex-shrink-0 text-xs">●</span>
+                                <p>Member of TESOL Research Professional Council, TESOL International Association, 2025–present</p>
+                            </div>
+                            <div class="flex items-start text-gray-700 leading-relaxed">
+                                <span class="text-blue-600 mr-3 mt-1.5 flex-shrink-0 text-xs">●</span>
+                                <p>External Examiner of MA in English Language Teaching and Assessment program, Hang Seng University of Hong Kong, 2023–present</p>
+                            </div>
+                            <div class="flex items-start text-gray-700 leading-relaxed">
+                                <span class="text-blue-600 mr-3 mt-1.5 flex-shrink-0 text-xs">●</span>
+                                <p>Deputy Director of Computer-Assisted Language Learning Association of China, 2022–present</p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-gray-900 text-gray-300 py-12 mt-20">
+        <div class="max-w-[1200px] mx-auto px-8">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-8">
+                <!-- Column 1: About -->
+                <div>
+                    <h3 class="text-white font-bold text-xl mb-4">Professor MA, Qing Angel</h3>
+                    <p class="text-base leading-relaxed">
+                        Specializing in corpus-based language pedagogy, TESOL, and technology-enhanced language learning.
+                    </p>
+                </div>
+                
+                <!-- Column 2: Quick Links -->
+                <div>
+                    <h3 class="text-white font-bold text-xl mb-4">Quick Links</h3>
+                    <ul class="space-y-2 text-base">
+                        <li><a href="#overview" class="hover:text-white transition-colors">Overview</a></li>
+                        <li><a href="#research-interests" class="hover:text-white transition-colors">Research Interests</a></li>
+                        <li><a href="#research-outputs" class="hover:text-white transition-colors">Publications</a></li>
+                    </ul>
+                </div>
+                
+                <!-- Column 3: Contact -->
+                <div>
+                    <h3 class="text-white font-bold text-xl mb-4">Contact</h3>
+                    <ul class="space-y-2 text-base">
+                        <li>
+                            <a href="mailto:maqing@eduhk.hk" class="hover:text-white transition-colors">
+                                Email: maqing@eduhk.hk
+                            </a>
+                        </li>
+                        <li>Phone: (852) 2948 8593</li>
+                        <li class="pt-2">
+                            <a href="https://scholar.google.com/citations?user=zHqYQNkAAAAJ&hl=en" target="_blank" rel="noopener noreferrer" class="hover:text-white transition-colors">
+                                Google Scholar
+                            </a>
+                        </li>
+                        <li>
+                            <a href="https://www.researchgate.net/profile/Qing-Ma-15" target="_blank" rel="noopener noreferrer" class="hover:text-white transition-colors">
+                                Research Gate
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            
+            <!-- Bottom Bar -->
+            <div class="border-t border-gray-700 pt-8 text-center text-base">
+                <p>@ Professor MA, Qing Angel</p>
+                <p class="mt-2 text-gray-400">Academic Profile</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- JavaScript for Collapsible Sections -->
+    <script>
+        function toggleSection(sectionId) {
+            const content = document.getElementById('content-' + sectionId);
+            const chevron = document.getElementById('chevron-' + sectionId);
+            const section = content.closest('.collapsible-section');
+            
+            content.classList.toggle('active');
+            chevron.classList.toggle('rotate');
+            
+            // Toggle active class on the collapsible-section header
+            const header = document.querySelector(`#content-${sectionId}`).previousElementSibling;
+            if (header && header.classList.contains('collapsible-section')) {
+                header.classList.toggle('active');
+            }
+        }
+        
+        function toggleOverview() {
+            const extra = document.getElementById('overview-extra');
+            const btnText = document.getElementById('overview-btn-text');
+            const chevron = document.getElementById('overview-chevron');
+            
+            if (extra.style.display === 'none') {
+                extra.style.display = 'block';
+                btnText.textContent = 'Show Less';
+                chevron.classList.add('rotate');
+            } else {
+                extra.style.display = 'none';
+                btnText.textContent = 'Read More';
+                chevron.classList.remove('rotate');
+            }
+        }
+        
+        function switchTab(tabId, event) {
+            // Remove active class from all tab buttons
+            const tabBtns = document.querySelectorAll('.tab-btn');
+            tabBtns.forEach(btn => {
+                btn.classList.remove('active');
+                btn.classList.add('bg-gray-50', 'text-gray-700', 'border-transparent');
+                btn.classList.remove('bg-blue-50', 'text-blue-700', 'border-blue-600');
+            });
+            
+            // Hide all tab content panes
+            const tabPanes = document.querySelectorAll('.tab-content-pane');
+            tabPanes.forEach(pane => {
+                pane.classList.remove('active');
+            });
+            
+            // Activate the clicked tab button
+            if (event) {
+                const activeBtn = event.target.closest('.tab-btn');
+                if (activeBtn) {
+                    activeBtn.classList.add('active', 'bg-blue-50', 'text-blue-700', 'border-blue-600');
+                    activeBtn.classList.remove('bg-gray-50', 'text-gray-700', 'border-transparent');
+                }
+            }
+            
+            // Show the selected tab content with fade-in animation
+            const activePane = document.getElementById(tabId);
+            if (activePane) {
+                activePane.classList.add('active');
+            }
+        }
+    </script>
+</body>
+</html>
